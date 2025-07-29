@@ -2058,6 +2058,21 @@ with st.sidebar:
 st.title("🌊 Advanced Water & Climate Analysis Dashboard")
 st.markdown("*AI-powered insights for environmental monitoring*")
 
+# Define tabs
+tab_titles = [
+    "📊 Dashboard",
+    "💧 Water Quality",
+    "🌦️ Climate",
+    "📡 Satellite",
+    "📈 Correlations",
+    "🔗 Raw Data Correlations",
+    "📊 Averaged Data",
+    "🔀 Non-Linear Analysis",
+    "📉 ITS Analysis"
+]
+
+tabs = st.tabs(tab_titles)
+
 # Initialize file variables if not set by uploaders
 if 'xlsx_files' not in locals():
     xlsx_files = []
