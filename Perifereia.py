@@ -2203,64 +2203,63 @@ else:
             st.plotly_chart(fig, use_container_width=True)
     
     # Water Quality Tab
-   # Water Quality Tab
-with tabs[1]:
-    st.header("💧 Water Quality Analysis")
-    if data_xlsx is not None and not data_xlsx.empty:
-        col1, col2 = st.columns([3, 1])
+    with tabs[1]:
+        st.header("💧 Water Quality Analysis")
+        if data_xlsx is not None and not data_xlsx.empty:
+            col1, col2 = st.columns([3, 1])
         
-        with col1:
-            # Get a list of parameters that have at least one non-null value
-            params = [c for c in data_xlsx.columns if c != 'Date' and data_xlsx[c].notna().any()]
-            selected_params = st.multiselect(
-                "Select parameters to visualize:", 
-                params,
-                default=params[:2] if params else [],
-                key="wq_params_select"
-            )
+            with col1:
+                # Get a list of parameters that have at least one non-null value
+                params = [c for c in data_xlsx.columns if c != 'Date' and data_xlsx[c].notna().any()]
+                selected_params = st.multiselect(
+                    "Select parameters to visualize:", 
+                    params,
+                    default=params[:2] if params else [],
+                    key="wq_params_select"
+                )
         
-        with col2:
-            show_anomalies = st.checkbox("Show Anomalies", value=True, key="wq_anom")
+            with col2:
+                show_anomalies = st.checkbox("Show Anomalies", value=True, key="wq_anom")
         
-        # Add a separator
-        st.markdown("---")
+            # Add a separator
+            st.markdown("---")
 
-        # Loop through each selected parameter to create its plot and download buttons
-        for param in selected_params:
-            with st.container(): # Use a container to group plot and its buttons
-                st.subheader(f"Time Profile for {param}")
+            # Loop through each selected parameter to create its plot and download buttons
+            for param in selected_params:
+                with st.container(): # Use a container to group plot and its buttons
+                    st.subheader(f"Time Profile for {param}")
                 
-                # Generate the plot
-                fig = plot_parameter_advanced(data_xlsx, param, show_anomalies)
-                if fig:
-                    st.plotly_chart(fig, use_container_width=True)
+                    # Generate the plot
+                    fig = plot_parameter_advanced(data_xlsx, param, show_anomalies)
+                    if fig:
+                        st.plotly_chart(fig, use_container_width=True)
                     
-                    # --- Add download buttons for this specific plot's data ---
-                    plot_data_df = data_xlsx[['Date', param]].dropna(subset=[param])
-                    add_plot_download_button(plot_data_df, f"water_quality_{param.replace(' ', '_')}")
+                        # --- Add download buttons for this specific plot's data ---
+                        plot_data_df = data_xlsx[['Date', param]].dropna(subset=[param])
+                        add_plot_download_button(plot_data_df, f"water_quality_{param.replace(' ', '_')}")
 
-                else:
-                    st.warning(f"Could not generate plot for {param}.")
-
-                # Parameter statistics expander
-                with st.expander(f"📊 View Statistics for {param}"):
-                    param_data = data_xlsx[param].dropna()
-                    if not param_data.empty:
-                        stat_cols = st.columns(4)
-                        stat_cols[0].metric("Mean", f"{param_data.mean():.2f}")
-                        stat_cols[1].metric("Std Dev", f"{param_data.std():.2f}")
-                        stat_cols[2].metric("Min", f"{param_data.min():.2f}")
-                        stat_cols[3].metric("Max", f"{param_data.max():.2f}")
                     else:
-                        st.info("No statistical data available.")
+                        st.warning(f"Could not generate plot for {param}.")
+
+                    # Parameter statistics expander
+                    with st.expander(f"📊 View Statistics for {param}"):
+                        param_data = data_xlsx[param].dropna()
+                        if not param_data.empty:
+                            stat_cols = st.columns(4)
+                            stat_cols[0].metric("Mean", f"{param_data.mean():.2f}")
+                            stat_cols[1].metric("Std Dev", f"{param_data.std():.2f}")
+                            stat_cols[2].metric("Min", f"{param_data.min():.2f}")
+                            stat_cols[3].metric("Max", f"{param_data.max():.2f}")
+                        else:
+                            st.info("No statistical data available.")
                 
-                st.markdown("---") # Add a separator between plots
-    else:
-        st.info("No water quality data has been uploaded. Please add data in the sidebar to begin analysis.")
+                    st.markdown("---") # Add a separator between plots
+        else:
+            st.info("No water quality data has been uploaded. Please add data in the sidebar to begin analysis.")
     
-    # Climate Tab
-    # Climate Tab
-    # Climate Tab
+        # Climate Tab
+        # Climate Tab
+        # Climate Tab
     with tabs[2]:
         st.header("Climate Analysis")
         if data_txt is not None and not data_txt.empty:
